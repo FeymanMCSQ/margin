@@ -1,0 +1,1378 @@
+{
+  "version": "2.0.0-seed",
+  "purpose": "Original example prompts for Margin V2. Not a validated script.",
+  "items": [
+    {
+      "id": "mgv2-001",
+      "section": "open",
+      "subcategory": "situational",
+      "move": "ask",
+      "text": "Have you been to one of these before?",
+      "cue": "Easy shared context; follow whatever they mention.",
+      "contextTags": [
+        "event",
+        "club"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-002",
+      "section": "open",
+      "subcategory": "situational",
+      "move": "ask",
+      "text": "How did you hear about this event?",
+      "cue": "Can transition into friends, interests, or why they came.",
+      "contextTags": [
+        "event",
+        "club"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-003",
+      "section": "open",
+      "subcategory": "situational",
+      "move": "ask",
+      "text": "Is this your first time at this place, or are you a regular?",
+      "cue": "If they are a regular, invite recommendations.",
+      "contextTags": [
+        "cafe",
+        "event"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-004",
+      "section": "open",
+      "subcategory": "situational",
+      "move": "ask",
+      "text": "Have you tried anything here that you would recommend?",
+      "cue": "Stay practical unless they seem open to talking.",
+      "contextTags": [
+        "cafe",
+        "food"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-005",
+      "section": "open",
+      "subcategory": "shared_context",
+      "move": "ask",
+      "text": "Are you here with a society, or did you just decide to check it out?",
+      "cue": "Use at a university society event.",
+      "contextTags": [
+        "university",
+        "club"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-006",
+      "section": "open",
+      "subcategory": "shared_context",
+      "move": "ask",
+      "text": "Are you taking this course too? How are you finding it?",
+      "cue": "Move from course facts to personal experience.",
+      "contextTags": [
+        "university",
+        "class"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-007",
+      "section": "open",
+      "subcategory": "shared_context",
+      "move": "ask",
+      "text": "How long have you been part of this group?",
+      "cue": "Ask what first drew them in.",
+      "contextTags": [
+        "club",
+        "volunteering"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-008",
+      "section": "open",
+      "subcategory": "observation_question",
+      "move": "ask",
+      "text": "That was a surprisingly lively discussion. What did you think of it?",
+      "cue": "Share your own take rather than asking only questions.",
+      "contextTags": [
+        "event",
+        "class"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "sprecher-2013"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-009",
+      "section": "open",
+      "subcategory": "observation_question",
+      "move": "ask",
+      "text": "This queue is moving at an impressive speed. Is it usually like this?",
+      "cue": "Low commitment; fine to end if the reply is brief.",
+      "contextTags": [
+        "queue",
+        "public"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-010",
+      "section": "open",
+      "subcategory": "direct_introduction",
+      "move": "say",
+      "text": "Hey, I don’t think we’ve met. I’m [your name].",
+      "cue": "Let them choose whether to engage; do not treat an introduction as a demand for time.",
+      "contextTags": [
+        "party",
+        "club",
+        "event"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-011",
+      "section": "open",
+      "subcategory": "direct_introduction",
+      "move": "ask",
+      "text": "Mind if I join you for a minute?",
+      "cue": "Only in a setting where joining is socially appropriate.",
+      "contextTags": [
+        "event",
+        "social"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "epley-2014"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated.",
+      "safetyNote": "Respect a no, hesitation, or signs of wanting privacy."
+    },
+    {
+      "id": "mgv2-012",
+      "section": "open",
+      "subcategory": "compliment",
+      "move": "say",
+      "text": "That’s a great jacket. The colour really stands out.",
+      "cue": "Keep it genuine and brief; a compliment does not obligate a response.",
+      "contextTags": [
+        "party",
+        "event",
+        "social"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-013",
+      "section": "open",
+      "subcategory": "compliment",
+      "move": "ask",
+      "text": "I like your tote bag design. Is it from somewhere local?",
+      "cue": "Compliment a chosen item rather than the person’s body.",
+      "contextTags": [
+        "university",
+        "social"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-014",
+      "section": "open",
+      "subcategory": "playful",
+      "move": "ask",
+      "text": "Quick debate: what’s the most overrated thing about university life?",
+      "cue": "Best with a receptive group and a playful tone.",
+      "contextTags": [
+        "university",
+        "party"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-015",
+      "section": "open",
+      "subcategory": "playful",
+      "move": "ask",
+      "text": "What’s the most unexpectedly good thing you’ve eaten lately?",
+      "cue": "A light topic that can lead to an activity.",
+      "contextTags": [
+        "food",
+        "social"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-016",
+      "section": "open",
+      "subcategory": "direct_interest",
+      "move": "say",
+      "text": "I noticed you earlier and wanted to come say hello. I’m [your name].",
+      "cue": "Signals interest more directly; not the default friendship opener.",
+      "contextTags": [
+        "social",
+        "party"
+      ],
+      "depth": 1,
+      "evidenceLevel": "design_hypothesis",
+      "sourceIds": [],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated.",
+      "safetyNote": "Use only where approaching is welcome; disengage if the person seems uninterested."
+    },
+    {
+      "id": "mgv2-017",
+      "section": "discover",
+      "subcategory": "daily_life",
+      "move": "ask",
+      "text": "What’s been taking up most of your time lately?",
+      "cue": "Ask whether that has been enjoyable or exhausting.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-018",
+      "section": "discover",
+      "subcategory": "studies",
+      "move": "ask",
+      "text": "What are you studying at the moment?",
+      "cue": "If already known, skip the basic fact and ask how they got into it.",
+      "contextTags": [
+        "university"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-019",
+      "section": "discover",
+      "subcategory": "studies",
+      "move": "ask",
+      "text": "What made you choose that subject?",
+      "cue": "Listen for the story or person behind the choice.",
+      "contextTags": [
+        "university"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-020",
+      "section": "discover",
+      "subcategory": "work",
+      "move": "ask",
+      "text": "What part of your work is actually interesting to you?",
+      "cue": "Avoid assuming people love their jobs.",
+      "contextTags": [
+        "work",
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-021",
+      "section": "discover",
+      "subcategory": "hobbies",
+      "move": "ask",
+      "text": "What have you been doing for fun recently?",
+      "cue": "If they name an activity, ask for a concrete example.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-022",
+      "section": "discover",
+      "subcategory": "hobbies",
+      "move": "ask",
+      "text": "Have you picked up any new hobbies this year?",
+      "cue": "If yes, ask what started it.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-023",
+      "section": "discover",
+      "subcategory": "music",
+      "move": "ask",
+      "text": "What have you been listening to on repeat lately?",
+      "cue": "Offer a recent discovery of your own.",
+      "contextTags": [
+        "general",
+        "music"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "sprecher-2013"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-024",
+      "section": "discover",
+      "subcategory": "food",
+      "move": "ask",
+      "text": "Have you found any places to eat that are actually worth recommending?",
+      "cue": "Potential invitation signal only if enthusiasm is mutual.",
+      "contextTags": [
+        "food",
+        "university"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-025",
+      "section": "discover",
+      "subcategory": "places",
+      "move": "ask",
+      "text": "Where do you usually go when you want to get out for a bit?",
+      "cue": "Helps learn preferred activities without demanding a meeting.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-026",
+      "section": "discover",
+      "subcategory": "travel",
+      "move": "ask",
+      "text": "Have you been anywhere recently that surprised you?",
+      "cue": "Ask why it surprised them.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-027",
+      "section": "discover",
+      "subcategory": "culture",
+      "move": "ask",
+      "text": "Is there a film or show you’ve been recommending to everyone?",
+      "cue": "Follow up on the part that excited them.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-028",
+      "section": "discover",
+      "subcategory": "weekend",
+      "move": "ask",
+      "text": "What does a good free afternoon look like for you?",
+      "cue": "Invite detail about what they enjoy, not their availability.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-029",
+      "section": "discover",
+      "subcategory": "preferences",
+      "move": "ask",
+      "text": "Are you more into trying new things or revisiting favourites?",
+      "cue": "Follow with an example to avoid a binary interview.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-030",
+      "section": "discover",
+      "subcategory": "shared_interests",
+      "move": "ask",
+      "text": "You mentioned you like hiking. What kind of trails do you enjoy most?",
+      "cue": "Template: replace hiking with something they actually said.",
+      "contextTags": [
+        "general",
+        "outdoors"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-031",
+      "section": "connect",
+      "subcategory": "origin_story",
+      "move": "ask",
+      "text": "How did you first get into that?",
+      "cue": "Use immediately after they mention an interest.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-032",
+      "section": "connect",
+      "subcategory": "best_part",
+      "move": "ask",
+      "text": "What do you enjoy most about it?",
+      "cue": "Stay with what they care about.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-033",
+      "section": "connect",
+      "subcategory": "example",
+      "move": "ask",
+      "text": "What’s a good example of what you mean?",
+      "cue": "Clarifies and invites a story without challenging them.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-034",
+      "section": "connect",
+      "subcategory": "experience",
+      "move": "ask",
+      "text": "What was that actually like for you?",
+      "cue": "Only if they have offered an experience they want to discuss.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-035",
+      "section": "connect",
+      "subcategory": "past_present",
+      "move": "ask",
+      "text": "Was that always your plan, or did you get into it by accident?",
+      "cue": "Useful after a career or degree story.",
+      "contextTags": [
+        "university",
+        "work"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-036",
+      "section": "connect",
+      "subcategory": "future",
+      "move": "ask",
+      "text": "Is there something related to that you’d like to try next?",
+      "cue": "Follow up on their goals and enthusiasm.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-037",
+      "section": "connect",
+      "subcategory": "opinion",
+      "move": "ask",
+      "text": "What’s something about it that most people get wrong?",
+      "cue": "Invites an opinion when the topic is one they know.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-038",
+      "section": "connect",
+      "subcategory": "emotional",
+      "move": "ask",
+      "text": "What was the best part of that whole experience?",
+      "cue": "More personal without requiring painful disclosure.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-039",
+      "section": "connect",
+      "subcategory": "share",
+      "move": "say",
+      "text": "That reminds me of something similar that happened to me…",
+      "cue": "Offer a short relevant experience, then return the floor.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "sprecher-2013",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-040",
+      "section": "connect",
+      "subcategory": "share",
+      "move": "say",
+      "text": "I’ve never tried that, but what you’re describing sounds fun.",
+      "cue": "Be curious without pretending to share the interest.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-041",
+      "section": "connect",
+      "subcategory": "reflect",
+      "move": "say",
+      "text": "So the unexpected part was [detail they mentioned]?",
+      "cue": "Reflect accurately; do not manufacture a detail.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-042",
+      "section": "connect",
+      "subcategory": "switch",
+      "move": "say",
+      "text": "That actually reminds me of something completely different…",
+      "cue": "Use when the current topic is winding down.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-043",
+      "section": "connect",
+      "subcategory": "switch",
+      "move": "ask",
+      "text": "On a completely different note, what’s been the highlight of your week?",
+      "cue": "Make switching explicit rather than abruptly steering.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-044",
+      "section": "connect",
+      "subcategory": "playful",
+      "move": "ask",
+      "text": "What’s your most defensible terrible opinion about that?",
+      "cue": "Only if the exchange already feels playful.",
+      "contextTags": [
+        "social"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-045",
+      "section": "connect",
+      "subcategory": "callback",
+      "move": "ask",
+      "text": "Earlier you said [detail]. How did that turn out?",
+      "cue": "Template: use only a genuinely remembered detail.",
+      "contextTags": [
+        "general"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "huang-2017"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-046",
+      "section": "deepen",
+      "subcategory": "values",
+      "move": "ask",
+      "text": "What is something you’ve become much more protective of as you’ve got older?",
+      "cue": "Share your own answer if the conversation invites reciprocity.",
+      "contextTags": [
+        "close",
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "kardas-2022",
+        "laurenceau-1998",
+        "sprecher-2013"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-047",
+      "section": "deepen",
+      "subcategory": "values",
+      "move": "ask",
+      "text": "What’s a belief you held strongly a few years ago but have reconsidered?",
+      "cue": "Avoid presenting disagreement as a test.",
+      "contextTags": [
+        "close",
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "kardas-2022",
+        "sprecher-2013"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-048",
+      "section": "deepen",
+      "subcategory": "identity",
+      "move": "ask",
+      "text": "When do you feel most like yourself?",
+      "cue": "Allow a light response; do not demand vulnerability.",
+      "contextTags": [
+        "close",
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "kardas-2022",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-049",
+      "section": "deepen",
+      "subcategory": "aspirations",
+      "move": "ask",
+      "text": "What’s something you’d love to get better at just for yourself?",
+      "cue": "Often less intrusive than questions about fears.",
+      "contextTags": [
+        "general",
+        "private"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "kardas-2022",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-050",
+      "section": "deepen",
+      "subcategory": "memories",
+      "move": "ask",
+      "text": "What’s a small memory that still makes you laugh?",
+      "cue": "A personal question that can remain playful.",
+      "contextTags": [
+        "general",
+        "private"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-051",
+      "section": "deepen",
+      "subcategory": "experience",
+      "move": "ask",
+      "text": "What experience has changed the way you think about people?",
+      "cue": "Only when the person is comfortable sharing.",
+      "contextTags": [
+        "close",
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "kardas-2022",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-052",
+      "section": "deepen",
+      "subcategory": "support",
+      "move": "ask",
+      "text": "When things get difficult, what kind of support is actually helpful to you?",
+      "cue": "Do not force a sensitive disclosure.",
+      "contextTags": [
+        "close",
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-053",
+      "section": "deepen",
+      "subcategory": "boundaries",
+      "move": "say",
+      "text": "We can absolutely skip that if it feels too personal.",
+      "cue": "Offer an easy exit from deeper questions.",
+      "contextTags": [
+        "private"
+      ],
+      "depth": 3,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "laurenceau-1998"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-054",
+      "section": "reconnect",
+      "subcategory": "callback",
+      "move": "ask",
+      "text": "How did the [event] you mentioned end up going?",
+      "cue": "Fill only with an actual previous note.",
+      "contextTags": [
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "liu-2023",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-055",
+      "section": "reconnect",
+      "subcategory": "callback",
+      "move": "ask",
+      "text": "Did you end up trying that place you were talking about?",
+      "cue": "If yes, ask for their verdict.",
+      "contextTags": [
+        "previous_contact",
+        "food"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-056",
+      "section": "reconnect",
+      "subcategory": "callback",
+      "move": "ask",
+      "text": "Any progress on that project you were excited about?",
+      "cue": "Keep a neutral tone; it may not have gone well.",
+      "contextTags": [
+        "previous_contact",
+        "work"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-057",
+      "section": "reconnect",
+      "subcategory": "check_in",
+      "move": "say",
+      "text": "Hey, I was thinking about our conversation the other day. How’s your week going?",
+      "cue": "Natural in a message or at the next meeting.",
+      "contextTags": [
+        "message",
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-058",
+      "section": "reconnect",
+      "subcategory": "resource",
+      "move": "say",
+      "text": "This reminded me of the thing you mentioned, so I thought I’d send it over.",
+      "cue": "Only send something genuinely relevant.",
+      "contextTags": [
+        "message",
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-059",
+      "section": "reconnect",
+      "subcategory": "check_in",
+      "move": "ask",
+      "text": "What’s changed since we last caught up?",
+      "cue": "Useful after a longer gap.",
+      "contextTags": [
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "liu-2023",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-060",
+      "section": "reconnect",
+      "subcategory": "shared_memory",
+      "move": "say",
+      "text": "I still laugh thinking about [specific shared moment].",
+      "cue": "Avoid generic or false claims of shared memories.",
+      "contextTags": [
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-talk-2025",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-061",
+      "section": "reconnect",
+      "subcategory": "invitation",
+      "move": "ask",
+      "text": "Want to catch up over coffee one day next week?",
+      "cue": "A low-pressure, specific reconnection invitation.",
+      "contextTags": [
+        "message",
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-062",
+      "section": "reconnect",
+      "subcategory": "care",
+      "move": "say",
+      "text": "You mentioned this week might be tough. Hope it’s going okay.",
+      "cue": "Make no assumptions about the outcome.",
+      "contextTags": [
+        "message",
+        "previous_contact"
+      ],
+      "depth": 2,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "laurenceau-1998",
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-063",
+      "section": "reconnect",
+      "subcategory": "boundary",
+      "move": "say",
+      "text": "No pressure to reply immediately. Just wanted to check in.",
+      "cue": "Use when appropriate; do not repeatedly chase silence.",
+      "contextTags": [
+        "message",
+        "previous_contact"
+      ],
+      "depth": 1,
+      "evidenceLevel": "design_hypothesis",
+      "sourceIds": [],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-064",
+      "section": "plans",
+      "subcategory": "low_commitment",
+      "move": "invite",
+      "text": "I’m grabbing coffee after class. Want to join?",
+      "cue": "Specific and convenient; a no ends this suggestion.",
+      "contextTags": [
+        "university",
+        "shared_activity"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-065",
+      "section": "plans",
+      "subcategory": "low_commitment",
+      "move": "invite",
+      "text": "I’m heading to that market this weekend if you feel like coming.",
+      "cue": "Appropriate if both have discussed it.",
+      "contextTags": [
+        "social",
+        "food"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-066",
+      "section": "plans",
+      "subcategory": "shared_interest",
+      "move": "invite",
+      "text": "You mentioned wanting to try [activity]. Want to do it together sometime?",
+      "cue": "Only suggest where [activity] was genuinely mentioned.",
+      "contextTags": [
+        "shared_interest"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-067",
+      "section": "plans",
+      "subcategory": "shared_interest",
+      "move": "invite",
+      "text": "There’s a [relevant event] next week. Would you be interested in going?",
+      "cue": "Personalize to a mutual interest, not an algorithmic guess.",
+      "contextTags": [
+        "shared_interest",
+        "event"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-068",
+      "section": "plans",
+      "subcategory": "group_hangout",
+      "move": "invite",
+      "text": "A few of us are going to [place] on Saturday. You’re welcome to join.",
+      "cue": "Good when one-on-one would feel premature.",
+      "contextTags": [
+        "group",
+        "shared_activity"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-069",
+      "section": "plans",
+      "subcategory": "recurring",
+      "move": "invite",
+      "text": "I usually go to [recurring activity] on Thursdays. Want to come along one week?",
+      "cue": "Repeated opportunities can be easier than a one-off event.",
+      "contextTags": [
+        "recurring"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-070",
+      "section": "plans",
+      "subcategory": "specific_time",
+      "move": "invite",
+      "text": "Want to grab lunch after our next class?",
+      "cue": "Make the proposed time easy to understand.",
+      "contextTags": [
+        "university"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-071",
+      "section": "plans",
+      "subcategory": "follow_up",
+      "move": "say",
+      "text": "I had a good time yesterday. We should do that again.",
+      "cue": "Only after an actual shared activity; suggest a concrete plan if reciprocated.",
+      "contextTags": [
+        "post_hangout"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018",
+        "liu-2023"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-072",
+      "section": "plans",
+      "subcategory": "follow_up",
+      "move": "invite",
+      "text": "That was fun. Want to try [related activity] next time?",
+      "cue": "Building continuity, not extracting a commitment.",
+      "contextTags": [
+        "post_hangout"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-073",
+      "section": "plans",
+      "subcategory": "respect_decline",
+      "move": "say",
+      "text": "No worries at all. Maybe another time.",
+      "cue": "Do not automatically resurface this invitation.",
+      "contextTags": [
+        "declined"
+      ],
+      "depth": 1,
+      "evidenceLevel": "design_hypothesis",
+      "sourceIds": [],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-074",
+      "section": "plans",
+      "subcategory": "reconsider",
+      "move": "say",
+      "text": "Sounds like your schedule is full. I’ll leave it with you.",
+      "cue": "Avoid turning scheduling uncertainty into repeated pressure.",
+      "contextTags": [
+        "busy"
+      ],
+      "depth": 1,
+      "evidenceLevel": "design_hypothesis",
+      "sourceIds": [],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    },
+    {
+      "id": "mgv2-075",
+      "section": "plans",
+      "subcategory": "shared_project",
+      "move": "invite",
+      "text": "Would you like to work on [mutual project] together sometime?",
+      "cue": "Only if it genuinely serves both people.",
+      "contextTags": [
+        "club",
+        "university",
+        "work"
+      ],
+      "depth": 1,
+      "evidenceLevel": "mechanism_supported",
+      "sourceIds": [
+        "book-platonic-2022",
+        "hall-2018"
+      ],
+      "evidenceNote": "The suggested wording is original and has not itself been experimentally validated."
+    }
+  ]
+}

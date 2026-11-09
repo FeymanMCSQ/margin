@@ -1,43 +1,52 @@
 # Margin
 
-A discreet mobile-first 36-question conversation tracker built with **Next.js App Router**, **TypeScript**, and **React**. Designed for deployment on **Vercel**.
+A quiet, mobile-first conversation companion built with Next.js App Router, React and TypeScript. Device-local by default, ready for Vercel.
+
+## Margin V2
+
+- **People:** separate conversation histories, quick resume, optional interests, private notes and upcoming events. Start without a name and name the conversation later.
+- **Talk:** Open, Discover, Connect, Deepen and Reconnect. One large card at a time, optional context filtering and a small conversational cue. All 75 supplied seed cards are populated across Talk and Plans.
+- **The original 36:** unchanged wording and order, three sets and existing per-person progress, separately accessible inside Deepen.
+- **Distinct actions:** Next advances, Skip omits a card for this page session, Mark used saves history for this person. Previous and the card browser allow explicit review. Used cards stay hidden by default.
+- **Plans:** your own activity ideas, 12 invitation/response suggestions, and considered/proposed/accepted/declined/completed/cancelled states. Declined invitations are set aside without reminders.
+- **Backups:** versioned local-storage migration, original v1 data retained, JSON export and previewed merge import.
+
+These are original, research-informed examples. Individual wordings have not been experimentally validated; the app does not predict social outcomes or prescribe a relationship sequence. Read the [product specification](docs/MARGIN_V2_PRODUCT_SPEC.md), [research register](docs/RESEARCH_SOURCES.md), and [implementation, editorial QA and migration notes](docs/V2_IMPLEMENTATION.md).
 
 ## Run locally
 
-Requires Node.js 20.9+ (Node.js 22 recommended).
+Node.js 20.9+ is required; Node.js 22 is supported.
 
-```bash
-npm install
+```sh
+npm ci
 npm run dev
 ```
 
 Open http://localhost:3000.
 
+## Verify
+
+```sh
+npm test
+npm run typecheck
+npm run build
+npm run test:e2e
+```
+
+Browser tests use local Chrome at 360 × 800 and start the production build on port 3100. Build first. To use a different supported browser, change `channel` in `playwright.config.ts`. Screenshots are written to ignored `.dist/`; failure traces go to ignored `test-results/`.
+
 ## Deploy on Vercel
 
-1. Extract this folder and push its contents to a GitHub repository (or import the project directly into Vercel).
-2. In Vercel, choose **Add New → Project** and import the repository.
-3. The framework preset should autodetect **Next.js**. Root directory should point to the folder containing `package.json`.
-4. Use the default build command (`next build`), then select **Deploy**. No environment variables, database, or server-side configuration are needed.
-
-This **is a real Next.js app**, not a standalone HTML file uploaded to a static site. Vercel serves the Next.js app; conversation histories remain client-side only.
-
-## Features
-
-- 36 independently paraphrased questions divided into three sets, in original Aron et al. sequence.
-- A separate named history for each person.
-- One-tap **Mark asked**, **Not now**, **Previous**, and direct question selection.
-- Set tabs and full 36-question browser with asked/unasked filter and history toggles.
-- Automatic localStorage persistence and same-tab refresh recovery.
-- Rename/delete profiles, JSON backup export and merge import.
-- No account, server-side person data, analytics, API keys, or database.
+Import this repository, use the Next.js preset, and keep the default build command (`next build`). The root directory is the one containing `package.json`. No environment variables, authentication or database are required. Existing manifest, app icons and standalone display settings are retained.
 
 ## Data and privacy
 
-This version uses `localStorage` key `margin.conversations.v1` and stores the active person ID in `sessionStorage`. The key matches the older static prototype, so histories **can be reused if the new app is served under the same browser origin**. Data does **not** sync across different domains or devices automatically. Browser privacy modes or clearing site data can erase it; download a JSON backup periodically.
+V2 stores data under `margin.conversations.v2`. On first upgrade it validates production `margin.conversations.v1`, preserves that key unchanged and writes `margin.backup.before-v2` before saving V2. Per-person original question indices and positions are preserved. Active-person quick resume uses session storage; skips and Previous history last for the current page session.
 
-No offline guarantee: the app needs an internet connection to load unless the browser has cached its assets. The Next.js version intentionally does not install the earlier prototype's simplistic service worker.
+No names, notes or histories are sent to a server. There are no analytics, recordings, runtime LLM calls or cloud sync. Export a JSON backup to transfer data to another browser origin or device. Imports are validated and previewed before merging, with a recovery snapshot saved first. Local browser privacy settings or clearing site data can erase histories, so keep periodic exports.
+
+There is no offline guarantee: a connection is needed to load the hosted application unless its assets are already cached. Reference PDFs and the handoff archive are private local inputs, ignored by Git and never bundled into client assets.
 
 ## Research attribution
 
-Based on Arthur Aron et al. (1997), *The Experimental Generation of Interpersonal Closeness: A Procedure and Some Preliminary Findings* (https://doi.org/10.1177/0146167297234003). Prompts are paraphrased, not verbatim.
+The original 36 independently paraphrased prompts retain the sequence of Aron et al. (1997), [*The Experimental Generation of Interpersonal Closeness*](https://doi.org/10.1177/0146167297234003). Using individual cards freely does not reproduce the experimental protocol. Source references for new cards describe underlying mechanisms, not proof that a particular line works.

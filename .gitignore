@@ -6,3 +6,10 @@ out
 .env*
 !.env.example
 .DS_Store
+.dist/
+test-results/
+playwright-report/
+# Private handoff references, never application assets.
+*.pdf
+*.PDF
+*.zip
