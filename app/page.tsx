@@ -8,6 +8,7 @@ import {
   type FormEvent,
 } from "react";
 import { Dialog } from "./components/dialog";
+import { TalkNavigation } from "./components/talk-navigation";
 import { SETS } from "@/lib/questions";
 import {
   dateLabel,
@@ -16,6 +17,7 @@ import {
 } from "@/lib/people";
 import {
   ALL_PROMPTS,
+  ARON,
   cardsFor,
   label,
   SECTIONS,
@@ -24,6 +26,12 @@ import {
   type Collection,
   type Prompt,
 } from "@/lib/prompts";
+import {
+  destinationHash,
+  parseDestination,
+  type Destination,
+  type TalkCollection,
+} from "@/lib/navigation";
 import {
   ACTIVE_KEY,
   STORAGE_KEY,
@@ -47,8 +55,8 @@ import {
 
 type Tab = "people" | "talk" | "plans";
 type Overlay = "profile" | "browse" | "options" | "plan" | "sources" | null;
-type Session = { skipped: string[]; history: string[] };
-const blankSession = (): Session => ({ skipped: [], history: [] });
+type Session = { skipped: string[] };
+const blankSession = (): Session => ({ skipped: [] });
 
 function Brand() {
   return (
@@ -86,6 +94,7 @@ export default function HomePage() {
   const [hydrated, setHydrated] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
   const [tab, setTab] = useState<Tab>("people");
+  const [talkCollection, setTalkCollection] = useState<TalkCollection>("open");
   const [overlay, setOverlay] = useState<Overlay>(null);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({
@@ -105,6 +114,13 @@ export default function HomePage() {
   const [topic, setTopic] = useState("");
   const [directInterest, setDirectInterest] = useState(false);
   const [showUsed, setShowUsed] = useState(false);
+  const [browseCollection, setBrowseCollection] = useState<Collection | "all">(
+    "open",
+  );
+  const [browseSearch, setBrowseSearch] = useState("");
+  const [browseStatus, setBrowseStatus] = useState<"all" | "unused" | "used">(
+    "all",
+  );
   const [manualId, setManualId] = useState<string | null>(null);
   const [sessions, setSessions] = useState<Record<string, Session>>({});
   const [storageWarning, setStorageWarning] = useState("");
@@ -136,17 +152,39 @@ export default function HomePage() {
         error instanceof Error ? error.message : "Unavailable",
       );
     }
-    setState(restored);
+    let initial: Destination = { tab: "people" };
+    let resumedId: string | null = null;
     try {
       const id =
         sessionStorage.getItem(ACTIVE_KEY) ?? sessionStorage.getItem(V1_ACTIVE);
-      if (restored.people.some((p) => p.id === id)) {
+      const person = restored.people.find((p) => p.id === id);
+      if (person) {
+        resumedId = person.id;
         setActiveId(id);
-        setTab("talk");
+        initial = {
+          tab: "talk",
+          collection:
+            person.lastSection === "plans" ? "open" : person.lastSection,
+        };
       }
     } catch {
       /* Quick resume is optional if session storage is disabled. */
     }
+    initial = parseDestination(window.location.hash) ?? initial;
+    setTab(initial.tab);
+    if (initial.tab === "talk") {
+      const section = initial.collection;
+      setTalkCollection(section);
+      restored = {
+        ...restored,
+        people: restored.people.map((p) =>
+          p.id === resumedId ? { ...p, lastSection: section } : p,
+        ),
+      };
+    }
+    window.history.scrollRestoration = "manual";
+    window.history.replaceState(null, "", destinationHash(initial));
+    setState(restored);
     setHydrated(true);
     return () => {
       if (toastTimer.current) clearTimeout(toastTimer.current);
@@ -183,16 +221,11 @@ export default function HomePage() {
   }, []);
 
   const active = state.people.find((p) => p.id === activeId) ?? null;
-  const collection: Collection =
-    tab === "plans"
-      ? "plans"
-      : active?.lastSection === "plans"
-        ? "open"
-        : (active?.lastSection ?? "open");
+  const collection: Collection = tab === "plans" ? "plans" : talkCollection;
   const aronSet = Math.floor((active?.current ?? 0) / 12);
-  const sessionKey = `${activeId}:${collection}:${collection === "aron" ? aronSet : ""}`;
+  const sessionKey = `${activeId}:${collection}`;
   const session = sessions[sessionKey] ?? blankSession();
-  const bank = cardsFor(collection, aronSet);
+  const bank = collection === "aron" ? ARON : cardsFor(collection);
   const declinedIds = new Set(
     active?.plans
       .filter((p) => p.state === "declined" || p.state === "cancelled")
@@ -221,6 +254,64 @@ export default function HomePage() {
         selection.cards[0]?.id);
   const card = bank.find((c) => c.id === currentId);
   const used = !!active && !!card && isUsed(active, card.id);
+  const currentIndex = bank.findIndex((c) => c.id === card?.id);
+  const previousId = currentIndex > 0 ? bank[currentIndex - 1].id : undefined;
+  const browseBank =
+    browseCollection === "all"
+      ? ALL_PROMPTS
+      : browseCollection === "aron"
+        ? ARON
+        : cardsFor(browseCollection);
+  const browseResults = active
+    ? browseBank.filter(
+        (c) =>
+          (!browseSearch.trim() ||
+            `${c.text} ${c.subcategory}`
+              .toLowerCase()
+              .includes(browseSearch.trim().toLowerCase())) &&
+          (browseStatus === "all" ||
+            isUsed(active, c.id) === (browseStatus === "used")),
+      )
+    : [];
+
+  function present(destination: Destination, push = true) {
+    setTab(destination.tab);
+    if (destination.tab === "talk") setTalkCollection(destination.collection);
+    setManualId(null);
+    setTopic("");
+    setShowUsed(false);
+    setOverlay(null);
+    setMessage("");
+    const hash = destinationHash(destination);
+    if (push && window.location.hash !== hash)
+      window.history.pushState(null, "", hash);
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+  }
+  function openBrowser() {
+    setBrowseCollection(collection);
+    setBrowseSearch("");
+    setBrowseStatus("all");
+    setOverlay("browse");
+  }
+  function choosePrompt(prompt: Prompt) {
+    if (!active) return;
+    const target: Collection = prompt.id.startsWith("aron-")
+      ? "aron"
+      : prompt.section;
+    revise({
+      ...active,
+      ...(target !== "plans" ? { lastSection: target } : {}),
+      positions: { ...active.positions, [target]: prompt.id },
+      ...(target === "aron" ? { current: Number(prompt.id.slice(5)) } : {}),
+    });
+    present(
+      target === "plans"
+        ? { tab: "plans" }
+        : { tab: "talk", collection: target },
+    );
+    setShowUsed(isUsed(active, prompt.id));
+    setManualId(prompt.id);
+  }
 
   function toast(text: string) {
     setMessage(text);
@@ -269,32 +360,22 @@ export default function HomePage() {
     return {
       ...person,
       positions,
+      ...(collection !== "plans" ? { lastSection: collection } : {}),
       ...(collection === "aron" && id ? { current: Number(id.slice(5)) } : {}),
     };
   }
-  function go(id?: string, person = active, previous = false) {
+  function go(id?: string, person = active) {
     if (!person || !id) {
       setManualId(null);
       return;
     }
-    if (!previous && card)
-      setSessions((old) => ({
-        ...old,
-        [sessionKey]: { ...session, history: [...session.history, card.id] },
-      }));
     revise(position(person, id));
     setManualId(id);
   }
   function navigate(action: "next" | "skip" | "used" | "previous") {
     if (!active || !card) return;
     if (action === "previous") {
-      const previous = session.history.at(-1);
-      if (!previous) return;
-      setSessions((old) => ({
-        ...old,
-        [sessionKey]: { ...session, history: session.history.slice(0, -1) },
-      }));
-      go(previous, active, true);
+      if (previousId) go(previousId);
       return;
     }
     const person = action === "used" ? markUsed(active, card.id, true) : active;
@@ -318,7 +399,7 @@ export default function HomePage() {
     const next = ordered[0]?.id;
     setSessions((old) => ({
       ...old,
-      [sessionKey]: { skipped, history: [...session.history, card.id] },
+      [sessionKey]: { skipped },
     }));
     const saved = revise(position(person, next));
     setManualId(next ?? null);
@@ -330,12 +411,10 @@ export default function HomePage() {
       );
     if (action === "skip") toast("Skipped for this session");
   }
-  function switchCollection(next: Collection) {
-    if (!active) return;
+  function switchCollection(next: TalkCollection) {
+    if (!active) return startTemporary(next);
     revise({ ...active, lastSection: next });
-    setManualId(null);
-    setShowUsed(false);
-    setTopic("");
+    present({ tab: "talk", collection: next });
   }
   function changeTopic(next: string) {
     setTopic(next);
@@ -355,21 +434,20 @@ export default function HomePage() {
   }
   function openPerson(person: Profile) {
     setActiveId(person.id);
-    setTab("talk");
-    setManualId(null);
-    setTopic("");
-    setShowUsed(false);
+    present({
+      tab: "talk",
+      collection: person.lastSection === "plans" ? "open" : person.lastSection,
+    });
     revise(person);
-    window.scrollTo(0, 0);
   }
-  function startTemporary() {
-    const person = newProfile("Unnamed conversation", true);
+  function startTemporary(section: TalkCollection = talkCollection) {
+    const person = {
+      ...newProfile("Unnamed conversation", true),
+      lastSection: section,
+    };
     commit({ ...state, people: [person, ...state.people] });
     setActiveId(person.id);
-    setTab("talk");
-    setManualId(null);
-    setTopic("");
-    setShowUsed(false);
+    present({ tab: "talk", collection: section });
   }
   function openProfile(edit: boolean) {
     setEditing(edit);
@@ -410,10 +488,11 @@ export default function HomePage() {
     else {
       commit({ ...state, people: [updated, ...state.people] });
       setActiveId(updated.id);
-      setTab("talk");
-      setManualId(null);
-      setTopic("");
-      setShowUsed(false);
+      present({
+        tab: "talk",
+        collection:
+          updated.lastSection === "plans" ? "open" : updated.lastSection,
+      });
     }
     setOverlay(null);
   }
@@ -527,6 +606,20 @@ export default function HomePage() {
     }
   }
 
+  useEffect(() => {
+    const onHistoryChange = () => {
+      const destination = parseDestination(window.location.hash);
+      if (!destination) return;
+      present(destination, false);
+      if (destination.tab === "talk" && active)
+        revise({ ...active, lastSection: destination.collection });
+    };
+    window.addEventListener("hashchange", onHistoryChange);
+    return () => window.removeEventListener("hashchange", onHistoryChange);
+    // Read the latest profile when the browser moves through destinations.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [activeId, state]);
+
   if (!hydrated)
     return (
       <div className="shell">
@@ -549,28 +642,62 @@ export default function HomePage() {
     active?.plans.filter((p) =>
       ["declined", "completed", "cancelled"].includes(p.state),
     ) ?? [];
+  const pagingControls = (
+    <>
+      <button
+        className="secondary"
+        disabled={!previousId}
+        onClick={() => navigate("previous")}
+      >
+        ← Previous
+      </button>
+      {collection === "aron" ? (
+        <button className="outline-btn browse-button" onClick={openBrowser}>
+          Browse all 36
+        </button>
+      ) : (
+        <span className="paging-position">
+          {card ? `${currentIndex + 1} / ${bank.length}` : `0 / ${bank.length}`}
+        </span>
+      )}
+      <button
+        className="secondary"
+        disabled={!card}
+        onClick={() => navigate("next")}
+      >
+        Next →
+      </button>
+    </>
+  );
   const promptView = (
     <>
-      <div className="filter-row">
-        <label className="select-label">
-          Context{" "}
-          <select
-            aria-label="Context or topic"
-            value={topic}
-            onChange={(e) => changeTopic(e.target.value)}
-          >
-            <option value="">Any context</option>
-            {TOPICS.map((t) => (
-              <option key={t} value={t}>
-                {t === "university" ? "Studies / university" : label(t)}
-              </option>
-            ))}
-          </select>
-        </label>
-        <button className="text-button" onClick={() => setOverlay("browse")}>
-          Choose a prompt
-        </button>
-      </div>
+      {collection !== "aron" && (
+        <div className="library-toolbar">
+          <details className="topic-filter">
+            <summary>
+              {topic ? `Topic: ${label(topic)}` : "Filter by topic"}
+            </summary>
+            <label className="select-label">
+              Context{" "}
+              <select
+                aria-label="Context or topic"
+                value={topic}
+                onChange={(e) => changeTopic(e.target.value)}
+              >
+                <option value="">Any context</option>
+                {TOPICS.map((t) => (
+                  <option key={t} value={t}>
+                    {t === "university" ? "Studies / university" : label(t)}
+                  </option>
+                ))}
+              </select>
+            </label>
+          </details>
+          <button className="outline-btn browse-button" onClick={openBrowser}>
+            Browse prompts
+          </button>
+        </div>
+      )}
       {selection.fallback && (
         <p className="small muted hint" role="status">
           No cards tagged {label(topic).toLowerCase()} here. Showing this
@@ -581,6 +708,15 @@ export default function HomePage() {
         <p className="small muted hint">
           Follow what they just mentioned. Leave room for your own story.
         </p>
+      )}
+      {tab === "talk" && (
+        <div
+          className="prompt-paging"
+          role="group"
+          aria-label="Question navigation"
+        >
+          {pagingControls}
+        </div>
       )}
       {card ? (
         <article
@@ -597,8 +733,8 @@ export default function HomePage() {
                   : "Suggestion"}{" "}
               <span className="meta-divider">/</span>{" "}
               {collection === "aron"
-                ? `No. ${Number(card.id.slice(5)) + 1}`
-                : label(card.subcategory)}
+                ? `Question ${Number(card.id.slice(5)) + 1} of 36`
+                : `${currentIndex + 1} of ${bank.length} · ${label(card.subcategory)}`}
             </span>
             {used && <span className="asked-label">Used</span>}
           </div>
@@ -659,33 +795,8 @@ export default function HomePage() {
           </div>
         </section>
       )}
-      <div className="prompt-actions">
-        <button
-          className="secondary"
-          disabled={!session.history.length}
-          onClick={() => {
-            if (!card && session.history.length) {
-              const previous = session.history.at(-1)!;
-              setSessions((old) => ({
-                ...old,
-                [sessionKey]: {
-                  ...session,
-                  history: session.history.slice(0, -1),
-                },
-              }));
-              go(previous, active, true);
-            } else navigate("previous");
-          }}
-        >
-          ← Previous
-        </button>
-        <button
-          className="secondary"
-          disabled={!card}
-          onClick={() => navigate("next")}
-        >
-          Next →
-        </button>
+      <div className="prompt-actions" role="group" aria-label="Prompt controls">
+        {tab === "plans" && <>{pagingControls}</>}
         <button
           className="secondary"
           disabled={!card}
@@ -702,6 +813,11 @@ export default function HomePage() {
         </button>
       </div>
       <div className="prompt-tools">
+        {active && (
+          <button className="text-button" onClick={() => openProfile(true)}>
+            {active.temporary ? "Add a name" : "Edit notes"}
+          </button>
+        )}
         <label className="check-label">
           <input
             type="checkbox"
@@ -743,12 +859,14 @@ export default function HomePage() {
 
   return (
     <>
-      <div className="shell">
+      <div
+        className={`shell ${tab === "talk" && active ? "has-conversation" : ""}`}
+      >
         <header className="topbar">
           <button
             className="wordmark brand-button"
             aria-label="Margin home"
-            onClick={() => setTab("people")}
+            onClick={() => present({ tab: "people" })}
           >
             <Brand />
           </button>
@@ -770,10 +888,11 @@ export default function HomePage() {
               className={tab === dest ? "active" : ""}
               aria-current={tab === dest ? "page" : undefined}
               onClick={() => {
-                setTab(dest);
-                setManualId(null);
-                setTopic("");
-                setShowUsed(false);
+                present(
+                  dest === "talk"
+                    ? { tab: "talk", collection: talkCollection }
+                    : { tab: dest },
+                );
               }}
             >
               {label(dest)}
@@ -791,17 +910,29 @@ export default function HomePage() {
         <main id="main-content">
           {tab === "people" ? (
             <>
-              <section className="home-hero">
+              <section
+                className={`home-hero ${state.people.length ? "returning-hero" : ""}`}
+              >
                 <div>
                   <div className="eyebrow">A little room to talk</div>
                   <h1>
-                    Good company.
-                    <br />
-                    <em>A little less guesswork.</em>
+                    {state.people.length ? (
+                      <>
+                        Pick up a<br />
+                        <em>conversation.</em>
+                      </>
+                    ) : (
+                      <>
+                        Good company.
+                        <br />
+                        <em>A little less guesswork.</em>
+                      </>
+                    )}
                   </h1>
                   <p className="hero-sub">
-                    A thought to start with, a thread to follow, a reason to
-                    meet again. Leave the rest to the conversation.
+                    {state.people.length
+                      ? "Choose someone below, or jump straight to the original 36 questions."
+                      : "A thought to start with, a thread to follow, a reason to meet again."}
                   </p>
                 </div>
                 <div className="hero-actions">
@@ -811,7 +942,16 @@ export default function HomePage() {
                   >
                     + New person
                   </button>
-                  <button className="text-button" onClick={startTemporary}>
+                  <button
+                    className="secondary"
+                    onClick={() => switchCollection("aron")}
+                  >
+                    Original 36 questions ↗
+                  </button>
+                  <button
+                    className="text-button"
+                    onClick={() => startTemporary("open")}
+                  >
                     Start without a name →
                   </button>
                 </div>
@@ -887,7 +1027,10 @@ export default function HomePage() {
                   <p>
                     Add someone to keep your place, or start without a name.
                   </p>
-                  <button className="secondary" onClick={startTemporary}>
+                  <button
+                    className="secondary"
+                    onClick={() => startTemporary("open")}
+                  >
                     Just start talking
                   </button>
                 </section>
@@ -914,13 +1057,24 @@ export default function HomePage() {
                 an unnamed conversation.
               </p>
               <div className="wrap-actions">
-                <button className="primary" onClick={startTemporary}>
+                <button className="primary" onClick={() => startTemporary()}>
                   Start without a name
                 </button>
-                <button className="secondary" onClick={() => setTab("people")}>
+                <button
+                  className="secondary"
+                  onClick={() => present({ tab: "people" })}
+                >
                   Choose a person
                 </button>
               </div>
+              {tab === "talk" && (
+                <button
+                  className="secondary original-entry"
+                  onClick={() => switchCollection("aron")}
+                >
+                  Original 36 questions ↗
+                </button>
+              )}
             </section>
           ) : (
             <div className="session-main">
@@ -931,13 +1085,13 @@ export default function HomePage() {
                       ? "In conversation with"
                       : "Make a little time with"}
                   </div>
-                  <h1>{active.name}</h1>
+                  <h1>{active.temporary ? "Just talking" : active.name}</h1>
                 </div>
                 <button
                   className="outline-btn"
-                  onClick={() => openProfile(true)}
+                  onClick={() => present({ tab: "people" })}
                 >
-                  {active.temporary ? "Add a name" : "Edit notes"}
+                  Change person
                 </button>
               </div>
               {active.lastDiscussed && (
@@ -957,106 +1111,23 @@ export default function HomePage() {
               )}
               {tab === "talk" ? (
                 <>
-                  <div
-                    className="category-desktop"
-                    role="group"
-                    aria-label="Talk categories"
-                  >
-                    {SECTIONS.map((section) => (
-                      <button
-                        key={section}
-                        className={
-                          collection === section ||
-                          (section === "deepen" && collection === "aron")
-                            ? "active"
-                            : ""
-                        }
-                        aria-pressed={
-                          collection === section ||
-                          (section === "deepen" && collection === "aron")
-                        }
-                        onClick={() => switchCollection(section)}
-                      >
-                        {label(section)}
-                      </button>
-                    ))}
-                  </div>
-                  <label className="category-mobile">
-                    Talk category
-                    <select
-                      aria-label="Talk category"
-                      value={collection === "aron" ? "deepen" : collection}
-                      onChange={(e) =>
-                        switchCollection(e.target.value as Collection)
-                      }
-                    >
-                      {SECTIONS.map((s) => (
-                        <option value={s} key={s}>
-                          {label(s)}
-                        </option>
-                      ))}
-                    </select>
-                  </label>
-                  {(collection === "deepen" || collection === "aron") && (
-                    <>
-                      <div className="collection-switch">
-                        <button
-                          aria-pressed={collection === "deepen"}
-                          onClick={() => switchCollection("deepen")}
-                        >
-                          Everyday depth
-                        </button>
-                        <button
-                          aria-pressed={collection === "aron"}
-                          onClick={() => switchCollection("aron")}
-                        >
-                          The original 36
-                        </button>
-                      </div>
-                      {collection === "aron" && (
-                        <nav
-                          className="set-nav"
-                          aria-label="Original question sets"
-                        >
-                          {SETS.map((set, i) => (
-                            <button
-                              key={set}
-                              className={`set-tab ${aronSet === i ? "active" : ""}`}
-                              aria-pressed={aronSet === i}
-                              onClick={() => {
-                                const index =
-                                  Array.from(
-                                    { length: 12 },
-                                    (_, n) => i * 12 + n,
-                                  ).find((n) => !active.asked.includes(n)) ??
-                                  i * 12;
-                                revise({
-                                  ...active,
-                                  current: index,
-                                  positions: {
-                                    ...active.positions,
-                                    aron: `aron-${index}`,
-                                  },
-                                });
-                                setManualId(null);
-                                setShowUsed(false);
-                              }}
-                            >
-                              <strong>Set {set}</strong>
-                              <small>
-                                {
-                                  active.asked.filter(
-                                    (n) => Math.floor(n / 12) === i,
-                                  ).length
-                                }
-                                /12 used
-                              </small>
-                            </button>
-                          ))}
-                        </nav>
-                      )}
-                    </>
-                  )}
+                  <TalkNavigation
+                    collection={talkCollection}
+                    activeSet={
+                      card?.id.startsWith("aron-")
+                        ? Math.floor(Number(card.id.slice(5)) / 12)
+                        : aronSet
+                    }
+                    asked={active.asked}
+                    onCollection={switchCollection}
+                    onSet={(set) => {
+                      const index =
+                        Array.from({ length: 12 }, (_, n) => set * 12 + n).find(
+                          (n) => !active.asked.includes(n),
+                        ) ?? set * 12;
+                      go(`aron-${index}`);
+                    }}
+                  />
                   {promptView}
                   {collection === "open" && (
                     <details className="quiet-details">
@@ -1235,7 +1306,7 @@ export default function HomePage() {
                     people: state.people.filter((p) => p.id !== active.id),
                   });
                   setActiveId(null);
-                  setTab("people");
+                  present({ tab: "people" });
                   setOverlay(null);
                 }
               }}
@@ -1246,64 +1317,109 @@ export default function HomePage() {
         </Dialog>
       )}
       {overlay === "browse" && active && (
-        <Dialog title="Choose a prompt" wide onClose={() => setOverlay(null)}>
+        <Dialog
+          title={
+            browseCollection === "aron" ? "All 36 questions" : "Browse prompts"
+          }
+          wide
+          onClose={() => setOverlay(null)}
+        >
           <p className="small muted">
-            {collection === "aron"
-              ? `The original 36 · Set ${SETS[aronSet]}`
-              : label(collection)}
-            . Choose any card to review it.
+            Jump to any card. Browsing never marks it used.
           </p>
-          <label className="check-label browse-check">
-            <input
-              type="checkbox"
-              checked={showUsed}
-              onChange={(e) => setShowUsed(e.target.checked)}
-            />{" "}
-            Include used cards
-          </label>
-          <div className="browse-list">
-            {bank
-              .filter((c) => showUsed || !isUsed(active, c.id))
-              .map((c) => (
-                <div className="browse-item" key={c.id}>
-                  <button
-                    className="browse-jump"
-                    onClick={() => {
-                      go(c.id);
-                      setOverlay(null);
-                    }}
-                  >
-                    <span className="browse-desc">
-                      {c.text}
-                      {c.subcategory === "direct_interest" && (
-                        <small className="block muted">
-                          Direct interest · more forward
-                        </small>
-                      )}
-                      {declinedIds.has(c.id) && (
-                        <small className="block muted">
-                          Linked to a declined or cancelled plan
-                        </small>
-                      )}
-                    </span>
-                  </button>
-                  <button
-                    className={`browse-done ${isUsed(active, c.id) ? "asked" : ""}`}
-                    aria-label={`${isUsed(active, c.id) ? "Mark unused" : "Mark used"}: ${c.text}`}
-                    onClick={() =>
-                      revise(markUsed(active, c.id, !isUsed(active, c.id)))
-                    }
-                  >
-                    {isUsed(active, c.id) ? "✓" : "+"}
-                  </button>
-                </div>
-              ))}
-            {bank.every((c) => isUsed(active, c.id)) && !showUsed && (
-              <p className="browse-empty">
-                All used. Include used cards to revisit them.
-              </p>
-            )}
+          <div className="browser-filters">
+            <label>
+              Search
+              <input
+                autoFocus
+                type="search"
+                placeholder="Search prompts?"
+                value={browseSearch}
+                onChange={(e) => setBrowseSearch(e.target.value)}
+              />
+            </label>
+            <label>
+              Collection
+              <select
+                value={browseCollection}
+                onChange={(e) =>
+                  setBrowseCollection(e.target.value as Collection | "all")
+                }
+              >
+                <option value="all">All collections</option>
+                <option value="aron">Original 36</option>
+                {SECTIONS.map((section) => (
+                  <option key={section} value={section}>
+                    {label(section)}
+                  </option>
+                ))}
+                <option value="plans">Plans</option>
+              </select>
+            </label>
           </div>
+          <div className="browser-status" role="group" aria-label="Used status">
+            {(["all", "unused", "used"] as const).map((status) => (
+              <button
+                key={status}
+                aria-pressed={browseStatus === status}
+                onClick={() => setBrowseStatus(status)}
+              >
+                {label(status)}
+              </button>
+            ))}
+          </div>
+          <p className="browser-count small muted" role="status">
+            {browseResults.length}{" "}
+            {browseCollection === "aron" ? "questions" : "prompts"}
+          </p>
+          <div className="browse-list">
+            {browseResults.map((c) => {
+              const original = c.id.startsWith("aron-");
+              const index = original ? Number(c.id.slice(5)) : -1;
+              return (
+                <button
+                  key={c.id}
+                  className={`prompt-choice ${c.id === card?.id ? "current" : ""}`}
+                  aria-label={`${original ? `Question ${index + 1}: ` : ""}${c.text}`}
+                  aria-current={c.id === card?.id ? "true" : undefined}
+                  onClick={() => choosePrompt(c)}
+                >
+                  <span className="prompt-choice-meta">
+                    {original
+                      ? `Set ${SETS[Math.floor(index / 12)]} ? Question ${index + 1}`
+                      : label(c.section)}
+                    {isUsed(active, c.id) ? " ? Used" : " ? Unused"}
+                    {c.id === card?.id ? " ? Current" : ""}
+                  </span>
+                  <span>{c.text}</span>
+                  {c.subcategory === "direct_interest" && (
+                    <small className="muted">
+                      Direct interest ? more forward
+                    </small>
+                  )}
+                  {declinedIds.has(c.id) && (
+                    <small className="muted">
+                      Linked to a declined or cancelled plan
+                    </small>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+          {!browseResults.length && (
+            <div className="browse-empty">
+              <p>No matching cards.</p>
+              <button
+                className="text-button"
+                onClick={() => {
+                  setBrowseSearch("");
+                  setBrowseStatus("all");
+                }}
+              >
+                Clear search & filters
+              </button>
+            </div>
+          )}
         </Dialog>
       )}
       {overlay === "plan" && active && (

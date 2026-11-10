@@ -26,6 +26,7 @@ async function seed(page: Page) {
     sessionStorage.clear();
     localStorage.setItem("margin.conversations.v1", JSON.stringify(people));
     sessionStorage.setItem("margin.active.v1", "ari");
+    history.replaceState(null, "", "/#talk/36");
   }, legacy);
   await page.reload();
   await expect(
@@ -62,8 +63,12 @@ test("360px upgrade, original sets, quick resume, new-card actions and cross-pro
   await page.getByRole("button", { name: "Set III", exact: false }).click();
   await expect(prompt(page)).toContainText("Each make three true statements");
   await page
-    .getByRole("combobox", { name: "Talk category", exact: true })
-    .selectOption("open");
+    .getByRole("button", { name: "Conversation prompts", exact: true })
+    .click();
+  await page
+    .getByRole("navigation", { name: "Talk categories" })
+    .getByRole("button", { name: "Open", exact: true })
+    .click();
   await expect(prompt(page)).toHaveText(
     "Have you been to one of these before?",
   );
@@ -85,12 +90,15 @@ test("360px upgrade, original sets, quick resume, new-card actions and cross-pro
   await page.reload();
   await expect(prompt(page)).not.toContainText("first time at this place");
   await page
-    .getByRole("combobox", { name: "Talk category", exact: true })
-    .selectOption("discover");
+    .getByRole("navigation", { name: "Talk categories" })
+    .getByRole("button", { name: "Discover", exact: true })
+    .click();
+  await page.locator(".topic-filter > summary").click();
   await page.getByLabel("Context or topic").selectOption("music");
   await expect(prompt(page)).toContainText("listening to on repeat");
   await page.reload();
   await expect(prompt(page)).toContainText("listening to on repeat");
+  await page.locator(".topic-filter > summary").click();
   await page.getByLabel("Context or topic").selectOption("music");
   await page.getByRole("button", { name: "Mark used", exact: true }).click();
   await expect(
@@ -101,8 +109,12 @@ test("360px upgrade, original sets, quick resume, new-card actions and cross-pro
     .getByRole("button", { name: "Talk with Sam", exact: true })
     .click();
   await page
-    .getByRole("combobox", { name: "Talk category", exact: true })
-    .selectOption("open");
+    .getByRole("button", { name: "Conversation prompts", exact: true })
+    .click();
+  await page
+    .getByRole("navigation", { name: "Talk categories" })
+    .getByRole("button", { name: "Open", exact: true })
+    .click();
   await expect(prompt(page)).toHaveText(
     "Have you been to one of these before?",
   );
@@ -169,8 +181,9 @@ test("profile editing, templates, import preview, export, focus and accessible p
     .getByRole("button", { name: "Start conversation", exact: true })
     .click();
   await page
-    .getByRole("combobox", { name: "Talk category", exact: true })
-    .selectOption("reconnect");
+    .getByRole("navigation", { name: "Talk categories" })
+    .getByRole("button", { name: "Reconnect", exact: true })
+    .click();
   await expect(prompt(page)).toContainText("[event]");
   await expect(prompt(page)).not.toContainText("Friday");
   await page

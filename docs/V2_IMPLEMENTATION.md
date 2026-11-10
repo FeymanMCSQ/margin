@@ -2,14 +2,14 @@
 
 ## Architecture
 
-- Next.js App Router, React and TypeScript remain in place. The existing ivory, sage and charcoal design is retained. There are three primary destinations: People, Talk and Plans. At phone widths a native category selector gives access to all five Talk categories in two taps.
+- Next.js App Router, React and TypeScript remain in place. The existing ivory, sage and charcoal design is retained. There are three primary destinations: People, Talk and Plans. Following the [navigation review](NAVIGATION_REVIEW.md), Talk exposes Original 36 directly beside Conversation prompts, with all five categories visible on phones.
 - `lib/prompts.ts` validates and types the full supplied 75-card seed, its category counts, IDs, copy and source references. The existing `lib/questions.ts` is unchanged; `aron-0` through `aron-35` are display adapters over the existing numeric indices, not replacements for saved question IDs.
 - `lib/state.ts` holds validation, migration, import merging, card selection, used history and plan states as independently tested functions. `app/page.tsx` owns the browser state and explicit UI actions; the native dialog component supplies focus containment and Escape handling.
 - No accounts, database, recording, analytics or runtime AI/research calls. The manifest and install icons remain in place. Hosting requires a connection; no offline service worker has been added.
 
 ## Content and editorial review
 
-All 75 cards ship: 16 Open, 14 Discover, 15 Connect, 8 everyday Deepen, 10 Reconnect and 12 Plans. The original 36 remain separate within Deepen, in Set I/II/III and their exact original wording and order.
+All 75 cards ship: 16 Open, 14 Discover, 15 Connect, 8 everyday Deepen, 10 Reconnect and 12 Plans. The original 36 remain separate in Set I/II/III and their exact original wording and order, accessible directly in Talk.
 
 Reviewed the whole seed for duplicate text, neighboring overlap, naturalness, inappropriate assumptions, context, reciprocal sharing, boundaries, and evidence inflation. No cards or IDs were removed. Similar opener/follow-up moves are retained because they cover different settings. Direct-interest card `mgv2-016` is excluded from automatic selection unless explicitly enabled; it is still manually available and labelled more forward.
 
@@ -40,7 +40,7 @@ Other source IDs and evidence descriptions come from the supplied register; they
 - Reads production `margin.conversations.v1` arrays and exported v1 envelopes. Preserves names, IDs, created/updated times, all asked indices and current numeric position for every person. Migrated people resume the original 36.
 - Saves a validated versioned envelope at `margin.conversations.v2`. The original v1 key is never changed or deleted; `margin.backup.before-v2` is written before the first v2 save. Existing snapshots are never overwritten. Loading valid v2 is idempotent.
 - New cards use a separate per-person ID-to-ISO-time used history. Original 36 used state remains `asked: number[]`. Talk and Plans have separate remembered positions. Used cards are hidden on reload, while the original stored position is retained.
-- Next only advances; Skip additionally excludes the card for this page session. Neither marks used. Previous explicitly reviews navigation history, including used/skipped cards. Session skips reset on reload. The browser can manually review used cards and toggle them unused.
+- Next only advances; Skip additionally excludes the card for this page session. Neither marks used. Previous explicitly reviews the preceding card in collection order, including used/skipped cards, and works after reload. Session skips reset on reload. The browser can manually select used cards; Mark unused is a separate action on the selected card.
 - Corrupt, unsupported or partially invalid saved data is not replaced with an empty store. The app displays a warning and blocks writes over the original. In-tab changes can still be exported. Options can download raw saved keys for recovery. Storage/quota failures are disclosed rather than reported as saved.
 - Import accepts v1/v2 Margin exports up to 2 MB and rejects the entire file if any profile, history, position or plan is invalid. Matching IDs and new-person counts are previewed before merging. Histories are combined, existing profiles are retained, newer profile fields and individually timestamped plan edits win. A uniquely named snapshot of both in-tab and persisted state is saved before import. If that snapshot cannot be written, import stops. React renders strings as text, never imported HTML.
 - Storage events synchronize valid updates from other tabs. This is device-local storage, not a multi-device conflict-resolution service. Exports remain the backup/transfer mechanism.

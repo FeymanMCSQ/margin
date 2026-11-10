@@ -911,6 +911,7 @@ h2 {
     grid-template-columns: 46px 1fr 1.3fr;
   }
 }
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -1783,5 +1784,241 @@ input[type="checkbox"] {
   }
   .prompt-tools .text-button {
     font-size: 12px;
+  }
+}
+
+/* Navigation review: visible collections, direct browsing, reachable controls. */
+.set-tab {
+  color: var(--soft-ink);
+}
+.talk-collections {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 6px;
+  padding: 5px;
+  background: #e8ede4;
+  border: 1px solid #d5dfd2;
+  border-radius: 15px;
+  margin: 0 0 12px;
+}
+.talk-collections button,
+.talk-categories button,
+.browser-status button {
+  border: 0;
+  border-radius: 10px;
+  color: var(--soft-ink);
+  background: transparent;
+  padding: 10px 8px;
+  min-height: 46px;
+  font-size: 14px;
+  font-weight: 650;
+}
+.talk-collections button[aria-pressed="true"],
+.talk-categories button[aria-pressed="true"],
+.browser-status button[aria-pressed="true"] {
+  background: var(--paper);
+  color: var(--sage-dark);
+  box-shadow: 0 1px 5px #26342f10;
+}
+.talk-collections button:last-child {
+  color: var(--sage-dark);
+}
+.talk-categories {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 5px;
+  margin: 0 0 12px;
+}
+.talk-categories button {
+  border: 1px solid var(--line);
+  font-size: 13px;
+  font-weight: 550;
+}
+.talk-categories button[aria-pressed="true"] {
+  background: var(--sage-light);
+  border-color: #8ba796;
+  box-shadow: none;
+}
+.library-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 8px 0 14px;
+}
+.browse-button {
+  background: var(--paper);
+  color: var(--sage-dark);
+  border-color: #b9cbbb;
+  font-size: 13px;
+  padding: 10px 14px;
+}
+.topic-filter {
+  position: relative;
+  color: var(--soft-ink);
+  font-size: 13px;
+}
+.topic-filter summary {
+  min-height: 44px;
+}
+.topic-filter .select-label {
+  position: absolute;
+  top: 44px;
+  left: 0;
+  z-index: 8;
+  background: var(--paper);
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  width: max-content;
+}
+.browser-filters {
+  display: grid;
+  gap: 14px;
+  margin: 18px 0 12px;
+}
+.browser-filters label {
+  font-size: 13px;
+  font-weight: 650;
+}
+.modal .browser-filters input,
+.modal .browser-filters select {
+  width: 100%;
+  display: block;
+  margin-top: 7px;
+  font-size: 16px;
+}
+.browser-status {
+  display: flex;
+  gap: 5px;
+  padding: 4px;
+  background: #edf0e8;
+  border-radius: 12px;
+}
+.browser-status button {
+  flex: 1;
+  min-height: 44px;
+  font-size: 13px;
+}
+.browser-count {
+  margin: 14px 0;
+}
+.prompt-choice {
+  display: grid;
+  gap: 9px;
+  width: 100%;
+  margin: 8px 0;
+  text-align: left;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.55;
+}
+.prompt-choice:hover,
+.prompt-choice.current {
+  border-color: #8aa896;
+  background: #f0f5ed;
+}
+.prompt-choice-meta {
+  font-size: 11px;
+  color: var(--soft-ink);
+  font-weight: 650;
+}
+.original-entry {
+  margin-top: 16px;
+}
+.returning-hero {
+  padding-block: 25px;
+}
+.returning-hero h1 {
+  font-size: 46px;
+}
+.prompt-paging {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  margin: 10px 0;
+}
+.prompt-paging button {
+  min-height: 46px;
+  padding: 10px 14px;
+  font-size: 14px;
+}
+.paging-position {
+  font-size: 12px;
+  color: var(--soft-ink);
+  min-width: 42px;
+  text-align: center;
+}
+.prompt-actions .paging-position {
+  display: none;
+}
+.topic-filter[open] {
+  z-index: 15;
+}
+@media (max-width: 680px) {
+  .talk-collections button {
+    font-size: 13px;
+    padding-inline: 6px;
+  }
+  .talk-categories {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+  .talk-categories button {
+    font-size: 13px;
+    min-height: 44px;
+  }
+  .has-conversation .topbar {
+    height: 64px;
+  }
+  .has-conversation .session-head {
+    margin: 6px 0 14px;
+  }
+  .has-conversation .session-head h1 {
+    font-size: 29px;
+  }
+  .has-conversation .session-head .outline-btn {
+    font-size: 12px;
+    padding-inline: 10px;
+  }
+  .has-conversation .prompt-paging {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--bg);
+    padding: 8px 0;
+    margin: 0 0 10px;
+  }
+  .has-conversation .prompt-paging button {
+    padding: 10px 6px;
+    font-size: 13px;
+    white-space: nowrap;
+  }
+  .returning-hero {
+    padding-top: 16px;
+  }
+  .returning-hero h1 {
+    font-size: 36px;
+  }
+  .returning-hero .hero-actions {
+    margin-top: 18px;
+  }
+  .browser-filters {
+    gap: 12px;
+  }
+  .library-toolbar {
+    margin-bottom: 12px;
+  }
+  .set-tab small {
+    font-size: 10px;
+  }
+  .has-conversation .session-card {
+    min-height: 250px;
   }
 }
