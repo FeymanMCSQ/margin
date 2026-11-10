@@ -249,3 +249,119 @@ test("corrupted saved state survives reload and UI actions", async ({
     await page.evaluate(() => localStorage.getItem("margin.conversations.v2")),
   ).toBe("broken original");
 });
+
+test("People exposes profile deletion with safe cancellation and persistent removal of only the chosen person", async ({
+  page,
+}) => {
+  await seed(page);
+  await page.evaluate(() => {
+    const saved = JSON.parse(localStorage.getItem("margin.conversations.v2")!);
+    saved.people[1].lastDiscussed = "Sam's upcoming show";
+    saved.people[1].usedPrompts = { "mgv2-001": "2026-11-10T00:00:00Z" };
+    saved.people[1].plans = [
+      {
+        id: "sam-walk",
+        idea: "Walk after class",
+        state: "considered",
+        activity: "Walk",
+        date: "",
+        updatedAt: "2026-11-10T00:00:00Z",
+      },
+    ];
+    localStorage.setItem("margin.conversations.v2", JSON.stringify(saved));
+  });
+  await page.reload();
+  await page.getByRole("button", { name: "People", exact: true }).click();
+  const before = await stored(page);
+  const remove = page.getByRole("button", {
+    name: "Delete profile for Sam",
+    exact: true,
+  });
+  await remove.click();
+  const dialog = page.getByRole("dialog", {
+    name: "Delete profile?",
+    exact: true,
+  });
+  await expect(dialog).toContainText("Sam");
+  await expect(
+    dialog.getByRole("button", { name: "Cancel", exact: true }),
+  ).toBeFocused();
+  await noAxeIssues(page);
+  await page.screenshot({
+    path: ".dist/delete-profile-mobile.png",
+    fullPage: false,
+  });
+  await dialog.getByRole("button", { name: "Cancel", exact: true }).click();
+  await expect(remove).toBeFocused();
+  expect(await stored(page)).toEqual(before);
+  await remove.click();
+  await dialog
+    .getByRole("button", { name: "Delete profile", exact: true })
+    .click();
+  await expect(
+    page.getByRole("button", { name: "Talk with Sam", exact: true }),
+  ).toHaveCount(0);
+  const after = await stored(page);
+  expect(after.people).toEqual([before.people[0]]);
+  expect(JSON.stringify(after)).not.toContain("sam-walk");
+  expect(JSON.stringify(after)).not.toContain("upcoming show");
+  expect(
+    await page.evaluate(() => sessionStorage.getItem("margin.active.v2")),
+  ).toBe("ari");
+  await page.reload();
+  await expect(
+    page.getByRole("button", { name: "Talk with Sam", exact: true }),
+  ).toHaveCount(0);
+  await expect(
+    page.getByRole("button", { name: "Talk with Ari", exact: true }),
+  ).toBeVisible();
+});
+
+test("deleting the active and last profile clears resume and legacy data does not resurrect it", async ({
+  page,
+}) => {
+  await seed(page);
+  await page.getByRole("button", { name: "Edit notes", exact: true }).click();
+  await page
+    .getByRole("textbox", { name: "Name", exact: true })
+    .fill("Unsaved draft");
+  await page
+    .getByRole("button", { name: "Delete profile", exact: true })
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Cancel", exact: true })
+    .click();
+  await expect(
+    page.getByRole("textbox", { name: "Name", exact: true }),
+  ).toHaveValue("Unsaved draft");
+  await page
+    .getByRole("button", { name: "Delete profile", exact: true })
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Delete profile", exact: true })
+    .click();
+  expect(
+    await page.evaluate(() => sessionStorage.getItem("margin.active.v2")),
+  ).toBeNull();
+  expect((await stored(page)).people.map((p: { id: string }) => p.id)).toEqual([
+    "sam",
+  ]);
+  await page
+    .getByRole("button", { name: "Delete profile for Sam", exact: true })
+    .click();
+  await page
+    .getByRole("dialog")
+    .getByRole("button", { name: "Delete profile", exact: true })
+    .click();
+  await expect(
+    page.getByRole("heading", { name: "Every conversation starts somewhere." }),
+  ).toBeVisible();
+  expect((await stored(page)).people).toEqual([]);
+  await page.reload();
+  await expect(
+    page.getByRole("heading", { name: "Every conversation starts somewhere." }),
+  ).toBeVisible();
+  expect((await stored(page)).people).toEqual([]);
+});

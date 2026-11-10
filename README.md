@@ -4,7 +4,7 @@ A quiet, mobile-first conversation companion built with Next.js App Router, Reac
 
 ## Margin V2
 
-- **People:** separate conversation histories, quick resume, optional interests, private notes and upcoming events. Start without a name and name the conversation later.
+- **People:** separate conversation histories, quick resume, optional interests, private notes and upcoming events. Start without a name and name the conversation later. Each profile has a visible Delete profile action with confirmation.
 - **Talk:** Open, Discover, Connect, Deepen and Reconnect. One large card at a time, optional context filtering and a small conversational cue. All 75 supplied seed cards are populated across Talk and Plans.
 - **The original 36:** a permanent, direct choice in Talk and on People. Unchanged wording and order, three sets and existing per-person progress. Browse all 36, search, or jump to any question.
 - **Distinct actions:** Next advances, Skip omits a card for this page session, Mark used saves history for this person. Previous goes back in collection order, including after reload. The browser allows explicit review of any card. Used cards stay hidden by default.

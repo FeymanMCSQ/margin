@@ -54,7 +54,8 @@ import {
 } from "@/lib/state";
 
 type Tab = "people" | "talk" | "plans";
-type Overlay = "profile" | "browse" | "options" | "plan" | "sources" | null;
+type Overlay =
+  "profile" | "browse" | "options" | "plan" | "sources" | "delete" | null;
 type Session = { skipped: string[] };
 const blankSession = (): Session => ({ skipped: [] });
 
@@ -96,6 +97,8 @@ export default function HomePage() {
   const [tab, setTab] = useState<Tab>("people");
   const [talkCollection, setTalkCollection] = useState<TalkCollection>("open");
   const [overlay, setOverlay] = useState<Overlay>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
+  const [deleteReturn, setDeleteReturn] = useState<"profile" | null>(null);
   const [editing, setEditing] = useState(false);
   const [draft, setDraft] = useState({
     name: "",
@@ -129,6 +132,7 @@ export default function HomePage() {
   const [incoming, setIncoming] = useState<State | null>(null);
   const [importError, setImportError] = useState("");
   const importRef = useRef<HTMLInputElement>(null);
+  const deleteCancelRef = useRef<HTMLButtonElement>(null);
   const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -221,6 +225,7 @@ export default function HomePage() {
   }, []);
 
   const active = state.people.find((p) => p.id === activeId) ?? null;
+  const deleting = state.people.find((p) => p.id === deleteId) ?? null;
   const collection: Collection = tab === "plans" ? "plans" : talkCollection;
   const aronSet = Math.floor((active?.current ?? 0) / 12);
   const sessionKey = `${activeId}:${collection}`;
@@ -462,6 +467,37 @@ export default function HomePage() {
         : { name: "", interests: "", note: "", event: "" },
     );
     setOverlay("profile");
+  }
+  function requestDelete(id: string) {
+    setDeleteId(id);
+    setDeleteReturn(overlay === "profile" ? "profile" : null);
+    setOverlay("delete");
+  }
+  function cancelDelete() {
+    setDeleteId(null);
+    setOverlay(deleteReturn);
+  }
+  function deleteProfile() {
+    if (!deleting) return;
+    const saved = commit({
+      ...state,
+      people: state.people.filter((p) => p.id !== deleting.id),
+    });
+    if (activeId === deleting.id) setActiveId(null);
+    setSessions((old) =>
+      Object.fromEntries(
+        Object.entries(old).filter(
+          ([key]) => !key.startsWith(`${deleting.id}:`),
+        ),
+      ),
+    );
+    setDeleteId(null);
+    present({ tab: "people" });
+    toast(
+      saved
+        ? "Profile deleted"
+        : "Removed in this tab only. Reloading may restore the profile.",
+    );
   }
   function saveProfile(event: FormEvent) {
     event.preventDefault();
@@ -983,39 +1019,49 @@ export default function HomePage() {
                   {[...state.people]
                     .sort((a, b) => b.updated - a.updated)
                     .map((person) => (
-                      <button
-                        className="person-card"
-                        key={person.id}
-                        onClick={() => openPerson(person)}
-                        aria-label={`Talk with ${person.name}`}
-                      >
-                        <div className="person-top">
-                          <span className="avatar" aria-hidden="true">
-                            {person.temporary
-                              ? "…"
-                              : person.name.slice(0, 1).toUpperCase()}
-                          </span>
-                          <span className="person-info">
-                            <strong>{person.name}</strong>
-                            <span className="subtitle">
-                              {person.interests.length
-                                ? person.interests.join(" · ")
-                                : "Room for a conversation"}
+                      <article className="person-entry" key={person.id}>
+                        <button
+                          className="person-card"
+                          onClick={() => openPerson(person)}
+                          aria-label={`Talk with ${person.name}`}
+                        >
+                          <div className="person-top">
+                            <span className="avatar" aria-hidden="true">
+                              {person.temporary
+                                ? "…"
+                                : person.name.slice(0, 1).toUpperCase()}
                             </span>
-                          </span>
-                          <span className="chev" aria-hidden="true">
-                            ↗
-                          </span>
+                            <span className="person-info">
+                              <strong>{person.name}</strong>
+                              <span className="subtitle">
+                                {person.interests.length
+                                  ? person.interests.join(" · ")
+                                  : "Room for a conversation"}
+                              </span>
+                            </span>
+                            <span className="chev" aria-hidden="true">
+                              ↗
+                            </span>
+                          </div>
+                          <div className="person-caption">
+                            <span>
+                              {person.lastSection === "aron"
+                                ? "The original 36"
+                                : label(person.lastSection)}
+                            </span>
+                            <span>{dateLabel(person.updated)}</span>
+                          </div>
+                        </button>
+                        <div className="person-card-actions">
+                          <button
+                            className="text-button danger"
+                            aria-label={`Delete profile for ${person.name}`}
+                            onClick={() => requestDelete(person.id)}
+                          >
+                            Delete profile
+                          </button>
                         </div>
-                        <div className="person-caption">
-                          <span>
-                            {person.lastSection === "aron"
-                              ? "The original 36"
-                              : label(person.lastSection)}
-                          </span>
-                          <span>{dateLabel(person.updated)}</span>
-                        </div>
-                      </button>
+                      </article>
                     ))}
                 </section>
               ) : (
@@ -1294,26 +1340,39 @@ export default function HomePage() {
           {editing && (
             <button
               className="text-button danger delete-person"
-              onClick={() => {
-                if (
-                  active &&
-                  window.confirm(
-                    `Delete ${active.name}, their histories, notes and plans?`,
-                  )
-                ) {
-                  commit({
-                    ...state,
-                    people: state.people.filter((p) => p.id !== active.id),
-                  });
-                  setActiveId(null);
-                  present({ tab: "people" });
-                  setOverlay(null);
-                }
-              }}
+              onClick={() => active && requestDelete(active.id)}
             >
-              Delete this person
+              Delete profile
             </button>
           )}
+        </Dialog>
+      )}
+      {overlay === "delete" && deleting && (
+        <Dialog
+          title="Delete profile?"
+          onClose={cancelDelete}
+          initialFocusRef={deleteCancelRef}
+        >
+          <p className="delete-copy">
+            Remove <strong>{deleting.name}</strong> and their question history,
+            notes and plans from your saved people?
+          </p>
+          <p className="small muted delete-hint">
+            You can’t undo this in the app. Export a backup first if you want to
+            keep a copy.
+          </p>
+          <div className="dialog-actions">
+            <button
+              ref={deleteCancelRef}
+              className="secondary"
+              onClick={cancelDelete}
+            >
+              Cancel
+            </button>
+            <button className="primary delete-confirm" onClick={deleteProfile}>
+              Delete profile
+            </button>
+          </div>
         </Dialog>
       )}
       {overlay === "browse" && active && (

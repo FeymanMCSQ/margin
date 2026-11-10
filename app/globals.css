@@ -1958,6 +1958,46 @@ input[type="checkbox"] {
 .prompt-actions .paging-position {
   display: none;
 }
+.person-entry {
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background: var(--paper);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.person-entry .person-card {
+  width: 100%;
+  min-height: 125px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.person-entry .person-card:hover {
+  transform: none;
+  background: #f0f4ed;
+}
+.person-entry .person-card:focus-visible {
+  outline-offset: -4px;
+}
+.person-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px;
+  border-top: 1px solid var(--line);
+}
+.delete-confirm {
+  background: #8b4139;
+}
+.delete-confirm:hover {
+  background: #71342e;
+}
+.delete-copy {
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+.delete-hint {
+  margin-top: 12px;
+}
 .topic-filter[open] {
   z-index: 15;
 }
